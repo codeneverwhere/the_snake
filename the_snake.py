@@ -1,5 +1,5 @@
 """Модуль игры "Змейка" на Python с использованием библиотеки Pygame."""
-from random import choice, randint
+from random import randint
 
 import pygame
 
