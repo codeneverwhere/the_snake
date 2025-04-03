@@ -126,17 +126,11 @@ class Snake(GameObject):
         )
         self.positions.insert(0, new_head)
 
-        if len(self.positions) > self.length:
-            self.last = self.positions.pop()
-        else:
-            self.last = None
+        self.last = self.positions.pop() if len(self.positions) > self.length else None
 
     def draw(self):
         """Отрисовывает змейку."""
-        for position in self.positions:
-            self.draw_cell(position)
-
-        self.draw_cell(self.positions[0], SNAKE_COLOR)
+        self.draw_cell(self.get_head_position(), SNAKE_COLOR)
 
         # Затирание последнего сегмента
         if self.last:
@@ -174,13 +168,14 @@ def main():
     snake = Snake()
     apple = Apple(occupied_positions=snake.positions)
 
+    screen.fill(BOARD_BACKGROUND_COLOR)
+    snake.draw()
+    apple.draw()
+    pygame.display.update()
+
     while True:
         clock.tick(SPEED)
         handle_keys(snake)
-        snake.move()
-
-        screen.fill(BOARD_BACKGROUND_COLOR)
-        pygame.display.update()
 
         if snake.get_head_position() == apple.position:
             snake.length += 1
@@ -188,9 +183,13 @@ def main():
 
         if len(snake.positions) != len(set(snake.positions)):
             screen.fill(BOARD_BACKGROUND_COLOR)
-            pygame.display.update()
             snake.reset()
+            apple.position = apple.randomize_position(snake.positions)
+            apple.draw()
+            snake.draw()
+            pygame.display.update()
 
+        snake.move()
         apple.draw()
         snake.draw()
         pygame.display.update()
