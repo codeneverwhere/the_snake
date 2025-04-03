@@ -126,7 +126,8 @@ class Snake(GameObject):
         )
         self.positions.insert(0, new_head)
 
-        self.last = self.positions.pop() if len(self.positions) > self.length else None
+        self.last = self.positions.pop() if len(self.positions) > self.length \
+            else None
 
     def draw(self):
         """Отрисовывает змейку."""
